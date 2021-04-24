@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "lib": ["es2017", "esnext.asynciterable"],
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types", "src/type-defs"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -14,8 +14,11 @@
     "outDir": "./build",
     "allowJs": true,
     "noEmit": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "github-api": ["./src/type-defs/github-api"]
+    }
   },
   "include": ["./src/**/*", ".env"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/type-defs/**"]
 }

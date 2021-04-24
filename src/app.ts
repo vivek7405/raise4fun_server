@@ -17,11 +17,13 @@ class App {
   public app: express.Application;
   public port: string | number;
   public env: string;
+  public clientUrl: string;
 
   constructor(routes: Routes[]) {
     this.app = express();
     this.port = process.env.PORT || 5000;
     this.env = process.env.NODE_ENV || 'development';
+    this.clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
 
     this.connectToDatabase();
     this.initializeMiddlewares();
@@ -57,12 +59,10 @@ class App {
   private initializeMiddlewares() {
     if (this.env === 'production') {
       this.app.use(morgan('combined', { stream }));
-      // this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
-      this.app.use(cors({ origin: 'localhost:3000', credentials: true }));
+      this.app.use(cors({ origin: this.clientUrl, credentials: true }));
     } else if (this.env === 'development') {
       this.app.use(morgan('dev', { stream }));
-      // this.app.use(cors({ origin: true, credentials: true }));
-      this.app.use(cors({ origin: true, credentials: false }));
+      this.app.use(cors({ origin: this.clientUrl, credentials: true }));
     }
 
     this.app.use(hpp());
@@ -75,7 +75,7 @@ class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
-      this.app.use('/', route.router);
+      this.app.use(route.path, route.router);
     });
   }
 
