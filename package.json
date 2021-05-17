@@ -25,6 +25,8 @@
     "envalid": "^7.1.0",
     "express": "^4.17.1",
     "github-api": "^3.4.0",
+    "graphql": "^15.5.0",
+    "graphql-request": "^3.4.0",
     "helmet": "^4.4.1",
     "hpp": "^0.2.3",
     "jest": "^26.6.3",

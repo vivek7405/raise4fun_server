@@ -4,7 +4,7 @@ import Route from '../interfaces/routes.interface';
 import authMiddleware from '../middlewares/auth.middleware';
 import validationMiddleware from '../middlewares/validation.middleware';
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 class AuthRoute implements Route {
   public path = '/auth';
@@ -18,11 +18,11 @@ class AuthRoute implements Route {
   //   });
   // }
 
-  private setupBodyParser() {
-    this.router.use(bodyParser.json());
-    this.router.use(bodyParser.json({ type: 'text/*' }));
-    this.router.use(bodyParser.urlencoded({ extended: false }));
-  }
+  // private setupBodyParser() {
+  //   this.router.use(bodyParser.json());
+  //   this.router.use(bodyParser.json({ type: 'text/*' }));
+  //   this.router.use(bodyParser.urlencoded({ extended: false }));
+  // }
 
   constructor() {
     // this.enableCors();
