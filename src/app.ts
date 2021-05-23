@@ -57,14 +57,13 @@ class App {
   }
 
   private initializeMiddlewares() {
-    // if (this.env === 'production') {
-    //   this.app.use(morgan('combined', { stream }));
-    //   this.app.use(cors({ origin: this.clientUrl, credentials: true }));
-    // } else if (this.env === 'development') {
-    //   this.app.use(morgan('dev', { stream }));
-    //   this.app.use(cors({ origin: this.clientUrl, credentials: true }));
-    // }
-    this.app.use(cors());
+    if (this.env === 'production') {
+      this.app.use(morgan('combined', { stream }));
+      this.app.use(cors({ origin: this.clientUrl, credentials: false }));
+    } else if (this.env === 'development') {
+      this.app.use(morgan('dev', { stream }));
+      this.app.use(cors({ origin: this.clientUrl, credentials: false }));
+    }    
 
     this.app.use(hpp());
     this.app.use(helmet());
