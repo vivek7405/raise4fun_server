@@ -11,12 +11,12 @@ class AuthRoute implements Route {
   public router = Router();
   public authController = new AuthController();
 
-  // private enableCors() {
-  //   this.router.use((req, res, next) => {
-  //     res.header('Access-Control-Allow-Origin', '*');
-  //     next();
-  //   });
-  // }
+  private enableCors() {
+    this.router.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      next();
+    });
+  }
 
   // private setupBodyParser() {
   //   this.router.use(bodyParser.json());
@@ -25,7 +25,7 @@ class AuthRoute implements Route {
   // }
 
   constructor() {
-    // this.enableCors();
+    this.enableCors();
     // this.setupBodyParser();
     this.initializeRoutes();
   }
