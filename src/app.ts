@@ -64,7 +64,7 @@ class App {
     //   this.app.use(morgan('dev', { stream }));
     //   this.app.use(cors({ origin: this.clientUrl, credentials: true }));
     // }
-    this.app.use(cors());
+    this.app.use(cors({ credentials: false }));
 
     this.app.use(hpp());
     this.app.use(helmet());
