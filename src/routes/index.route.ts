@@ -12,7 +12,7 @@ class IndexRoute implements Route {
 
   private enableCors() {
     this.router.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
       next();
     });
   }
