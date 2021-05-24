@@ -10,7 +10,15 @@ class IndexRoute implements Route {
   public indexController = new IndexController();
   public authController = new AuthController();
 
+  private enableCors() {
+    this.router.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      next();
+    });
+  }
+
   constructor() {
+    this.enableCors();
     this.initializeRoutes();
   }
 
