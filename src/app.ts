@@ -12,6 +12,7 @@ import { dbConnection } from './database';
 import Routes from './interfaces/routes.interface';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger, stream } from './utils/logger';
+import './jobs';
 
 class App {
   public app: express.Application;

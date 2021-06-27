@@ -5,7 +5,7 @@ import { User } from '../interfaces/users.interface';
 import CampaignService from '../services/campaigns.service';
 
 class CampaignsController {
-  public campaignService = new CampaignService();
+  private campaignService = new CampaignService();
 
   public getAllCampaigns = async (req: Request, res: Response, next: NextFunction) => {
     try {

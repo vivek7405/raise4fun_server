@@ -13,10 +13,21 @@ class CampaignService {
 
   public async getAllCampaigns() {
     let campaigns = await this.campaigns.find();
+    return campaigns;
+  }
+
+  // JOB
+  public async updateAllCampaignsLanguages() {
+    let campaigns = await this.campaigns.find();
     await Promise.all(
       campaigns.map(async (campaign: any) => {
         const res = await axios.get(campaign.repo.languages_url);
         campaign.repo.languages = res.data;
+        try {
+          await this.campaigns.findByIdAndUpdate(campaign.id, campaign);
+        } catch (error) {
+          console.log('Error updating campaign with id ' + campaign.id + ': ' + error);
+        }
       }),
     );
     return campaigns;
@@ -35,6 +46,8 @@ class CampaignService {
     if (findCampaign) throw new HttpException(409, `Campaign with repo id ${campaignData.repo.id} already exists`);
 
     // const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const res = await axios.get(campaignData.repo.languages_url);
+    campaignData.repo.languages = res.data;
     const createCampaignData = await this.campaigns.create({ ...campaignData });
     return createCampaignData;
   }
