@@ -7,6 +7,7 @@ import { isEmpty } from '../utils/util';
 import GitHub from 'github-api';
 const g = require('graphql-request');
 import axios from 'axios';
+import { labels } from '../utils/beginnerLabels';
 
 const { GraphQLClient, gql } = g;
 const url = 'https://api.github.com/graphql';
@@ -51,6 +52,70 @@ class GithubService {
     const profile = await graphQLClient.request(query);
 
     return profile;
+  }
+
+  private async getRandomUserToken() {
+    const users: User[] = await userModel.find();
+    const randomUser = users[Math.floor(Math.random() * users.length)];
+    return randomUser.token;
+  }
+
+  public async getBeginnerRepos() {
+    const graphQLClient = new GraphQLClient(url, {
+      headers: {
+        authorization: `Bearer ${await this.getRandomUserToken()}`,
+      },
+    });
+
+    const query = gql`
+        query Search($query: String!, $cursor: String) { 
+          search(first : 30, query: $query, type: REPOSITORY, after: $cursor ){
+            edges{
+              cursor
+              node {
+                ...on Repository{
+                  name
+                  description
+                  url
+                  stargazers {
+                    totalCount
+                  }
+                  languages(first: 100, orderBy:{field: SIZE, direction: DESC}) {
+                    nodes {
+                      name
+                    }
+                  }
+                  issues(first: 50, labels: [${labels.map(label => `"${label}"`)}], states: OPEN){
+                    nodes {
+                      ...on Issue {
+                        title
+                        url
+                        createdAt
+                        updatedAt
+                        labels(first: 10) {
+                          nodes{
+                          name
+                          color
+                          id
+                        }
+                      }
+                    }
+                  }      
+                }
+              }
+            }
+          }
+        }
+        }
+        `;
+
+    const variables = {
+      query: 'sort:stars-desc language:Javascript',
+    };
+
+    const beginnerRepos = await graphQLClient.request(query, variables);
+
+    return beginnerRepos;
   }
 
   private async getRandomToken() {

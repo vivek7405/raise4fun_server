@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { RequestWithUser } from '../interfaces/auth.interface';
+import { User } from '../interfaces/users.interface';
+import userModel from '../models/users.model';
 import GithubService from '../services/github.service';
 
 class GithubController {
@@ -9,6 +11,15 @@ class GithubController {
     try {
       const repos = await this.gihubService.getAllRepos(req.user.token);
       res.status(200).json({ data: repos, message: 'Github Repos' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getBeginnerRepos = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const beginnerRepos = await this.gihubService.getBeginnerRepos();
+      res.status(200).json({ data: beginnerRepos, message: 'Beginner Issues' });
     } catch (error) {
       next(error);
     }
